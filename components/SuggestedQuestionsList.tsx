@@ -9,10 +9,12 @@ export const SuggestedQuestionsList: React.FC<SuggestedQuestionsListProps> = ({ 
   return (
     <section>
       <h2 className="mt-44 font-medium text-black max-md:mt-10 text-center">Suggested Questions</h2>
-      <div className="flex flex-wrap gap-2.5 mt-4 max-w-full text-white w-[778px]">
+      <div className="mx-auto sm:max-w-2xl sm:px-4">
+      <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0 text-white">
         {questions.map((question, index) => (
           <SuggestedQuestion key={index} question={question} />
         ))}
+      </div>
       </div>
     </section>
   );
