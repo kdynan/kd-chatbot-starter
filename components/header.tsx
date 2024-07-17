@@ -13,7 +13,7 @@ export function Header() {
           <a href="/" className="text-zinc-900">Home</a>
           <a href="#" className="text-stone-900">Explore</a>
           <a href="#">Public Data</a>
-          <a href="#" className="flex-auto">How It Works</a>
+          <a href="/how" className="flex-auto">How It Works</a>
           <a href="/about">About</a>
         </nav>
       </div>
