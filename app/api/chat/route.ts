@@ -1,16 +1,27 @@
-import { openai } from '@ai-sdk/openai';
-import { streamText } from 'ai';
-
-// Allow streaming responses up to 30 seconds
-export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
 
-  const result = await streamText({
-    model: openai('gpt-4-turbo'),
-    messages,
+  const apiUrl : string = process.env.E2C_CHATBOT_API_URL!;
+  const apiKey : string = process.env.E2C_CHATBOT_API_KEY!;
+  const message  = await req.json();
+  console.log(message);
+
+ 
+  const payload = {
+    'question' : message.question
+  }
+
+  const result = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-Key':  `${apiKey}`
+    },
+    body: JSON.stringify(payload)
   });
 
-  return result.toAIStreamResponse();
+  const response = await result.json();
+  console.log(response);
+
+  return Response.json({response});
 }
