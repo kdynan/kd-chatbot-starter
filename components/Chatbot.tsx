@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { SuggestedQuestionsList } from './SuggestedQuestionsList';
+import { DataExplanation } from './DataExplanation';
 
 interface Message {
     text: string;
+    messageType: 'explanation' | 'sql' | 'chart' | 'error' | 'user';
     sender: 'user' | 'bot';
 }
 
@@ -25,10 +27,10 @@ export const Chatbot: React.FC = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    const handleSend = async () => {
+    const handleSend =  async () => {
         if (input.trim() === '') return;
 
-        const userMessage: Message = { text: input, sender: 'user' };
+        const userMessage: Message = { text: input, sender: 'user', messageType:'user' };
         setMessages((prevMessages) => [...prevMessages, userMessage]);
 
         try {
@@ -39,10 +41,10 @@ export const Chatbot: React.FC = () => {
             });
             const json = await response.json();
             console.log(json);
-            const botMessage: Message = { text: json.response.explanation, sender: 'bot' };
+            const botMessage: Message = { text: json.response.explanation, messageType:'explanation', sender: 'bot' };
             setMessages((prevMessages) => [...prevMessages, botMessage]);
         } catch (error) {
-            const errorMessage: Message = { text: 'Error: Unable to fetch response', sender: 'bot' };
+            const errorMessage: Message = { text: 'Error: Unable to fetch response', messageType:'error', sender: 'bot' };
             setMessages((prevMessages) => [...prevMessages, errorMessage]);
         }
 
@@ -57,19 +59,13 @@ export const Chatbot: React.FC = () => {
 
     return (
         <>
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a5d40b3a563ff737f5957323d52d13136ac61dc25b01ac2d454c781fab7199c?apiKey=48e0882be7cc4391993150eb17882064&" alt="" className="mt-24 aspect-square fill-cyan-600 w-[92px] max-md:mt-10" />
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a5d40b3a563ff737f5957323d52d13136ac61dc25b01ac2d454c781fab7199c?apiKey=48e0882be7cc4391993150eb17882064&" alt="" className="mt-8 aspect-square fill-cyan-600 w-[92px] max-md:mt-10" />
             <h1 className="mt-6 font-medium text-black">How can I help you today?</h1>
-            <div className="flex flex-col items-center justify-center bg-gray-100">
+            <div className="flex flex-col bg-gray-100">
                 <div className="flex flex-col w-full bg-white shadow-lg rounded-lg">
-                    <div className="flex flex-col h-80 overflow-y-auto mb-4">
+                    <div className="flex flex-col overflow-y-auto mb-4">
                         {messages.map((message, index) => (
-                            <div
-                                key={index}
-                                className={`p-2 my-1 rounded-md ${message.sender === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-300 text-black self-start'
-                                    }`}
-                            >
-                                {message.text}
-                            </div>
+                                <DataExplanation explanation={message.text} />
                         ))}
                         <div ref={messagesEndRef} />
                     </div>

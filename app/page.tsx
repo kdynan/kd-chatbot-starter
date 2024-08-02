@@ -5,7 +5,7 @@ import {Chatbot} from '../components/Chatbot';
 
 export default function MainContent() {
   return (
-    <main className="flex flex-col items-center">
+    <main className="relative flex flex-col items-center">
       <Chatbot />
     </main>
   );
