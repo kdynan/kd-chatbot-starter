@@ -17,7 +17,7 @@ export function Header() {
           <a href="/about">About</a>
         </nav>
       </div>
-      <button className="justify-center px-10 py-4 my-auto text-white bg-cyan-600 rounded-lg max-md:px-5">
+      <button className="justify-center px-8 py-4 my-auto text-white bg-cyan-600 rounded-lg max-md:px-5">
         Ask a Question
       </button>
     </header>

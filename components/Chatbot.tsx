@@ -62,7 +62,7 @@ export const Chatbot: React.FC = () => {
             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a5d40b3a563ff737f5957323d52d13136ac61dc25b01ac2d454c781fab7199c?apiKey=48e0882be7cc4391993150eb17882064&" alt="" className="mt-8 aspect-square fill-cyan-600 w-[92px] max-md:mt-10" />
             <h1 className="mt-6 font-medium text-black">How can I help you today?</h1>
             <div className="flex flex-col bg-gray-100">
-                <div className="flex flex-col w-full bg-white shadow-lg rounded-lg">
+                <div className="flex flex-col w-full bg-white">
                     <div className="flex flex-col overflow-y-auto mb-4">
                         {messages.map((message, index) => (
                                 <DataExplanation explanation={message.text} />
