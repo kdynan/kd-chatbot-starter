@@ -22,7 +22,7 @@ export function QuestionInput({ handleInputChange, handleSubmit }: QuestionInput
           onChange={handleInputChange}
         />
         <button type="submit" aria-label="Submit question">
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8b132fc3fea614364bd6f3a957fec28e477bd9774e7655738c3021ccf0c5b187?apiKey=48e0882be7cc4391993150eb17882064&" alt="" className="shrink-0 self-start aspect-[1.25] fill-cyan-600 w-[25px]" />
+          <img loading="lazy" src="/images/submit.svg" alt="" className="shrink-0 self-start aspect-[1.25] fill-cyan-600 w-[25px]" />
         </button>
       </div>
     </form>

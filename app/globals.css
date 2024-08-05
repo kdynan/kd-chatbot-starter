@@ -25,7 +25,12 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
-
+/*
+div {
+  border: thin solid black;
+  padding: 10px;
+}
+*/
 @layer utilities {
   .text-balance {
     text-wrap: balance;
