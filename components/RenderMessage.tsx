@@ -1,6 +1,7 @@
 import React from 'react';
 import { RotatingLines } from 'react-loader-spinner';
 import { Message } from '../app/types/message';
+import { DataTable } from './DataTable';
 
 export function RenderMessage({ message }: { message: Message }) {
 
@@ -74,6 +75,11 @@ export function RenderMessage({ message }: { message: Message }) {
 
     case 'sql':
     case 'chart':
+    case 'queryResults': return (
+      <div className="relative overflow-x-auto">
+        <DataTable data={message.query_result!} />
+      </div>
+    )
     case 'error':
     case 'user': return (
       <div className="flex flex-wrap gap-3 text-xl max-md:mt-10">
