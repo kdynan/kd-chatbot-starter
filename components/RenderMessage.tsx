@@ -1,7 +1,8 @@
 import React from 'react';
 import { RotatingLines } from 'react-loader-spinner';
-import { Message } from '../app/types/message';
+import { Message } from '../app/types/types';
 import { DataTable } from './DataTable';
+import { ChartComponent } from './Chart';
 
 export function RenderMessage({ message }: { message: Message }) {
 
@@ -74,10 +75,15 @@ export function RenderMessage({ message }: { message: Message }) {
     );
 
     case 'sql':
-    case 'chart':
+    case 'chart': return (
+     
+        <div className="relative">
+        <ChartComponent data={message.chartData!} />
+      </div>
+    )
     case 'queryResults': return (
-      <div className="relative overflow-x-auto">
-        <DataTable data={message.query_result!} />
+      <div className="relative ">
+        <DataTable data={message.tableData!} />
       </div>
     )
     case 'error':

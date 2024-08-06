@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { SuggestedQuestionsList } from './SuggestedQuestionsList';
 import { DataExplanation } from './DataExplanation';
 import { RenderMessage } from './RenderMessage';
-import { Message } from '../app/types/message';
+import { Message, E2CTableData, E2CChartDataRow, E2CChartData } from '../app/types/types';
 
 
 export const Chatbot: React.FC = () => {
@@ -382,7 +382,7 @@ export const Chatbot: React.FC = () => {
       }
         */
 
-    /* const query_results  = {
+     const query_results  = {
       "SY": {
         "0": "2023",
         "1": "2023",
@@ -443,9 +443,9 @@ export const Chatbot: React.FC = () => {
         "8": "82.50000000",
         "9": "80.33333300"
       }
-    } */
+    } 
 
-    const query_results = { ATTEND_RATE: '92.50', SY: '2023' }
+    //const query_results = { ATTEND_RATE: '92.50', SY: '2023' }
     const [input, setInput] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -458,9 +458,15 @@ export const Chatbot: React.FC = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    const transFormQueryResults = (query_results: any) => {
     
-        const transformedResults : Array<Array<string>>= [];
+    /**
+     * 
+     * @param query_results 
+     * @returns 
+     */
+    const transFormQueryResultsForTable = (query_results: any) => {
+    
+        const transformedResults : E2CTableData= [];
         const headers = Object.keys(query_results);
         const colData : any = Object.values(query_results);
   
@@ -476,19 +482,49 @@ export const Chatbot: React.FC = () => {
         for (let i = 0; i < rowCount; i++) {
             const row = [];
             
-            //console.log('col ' + col);
             for (let j = 0; j < colCount; j++) {
                 const col : any = colData[j];
                 console.log('col ' + col[i]); 
                 row.push(col[i]);
-            //     const colDataj : any = colData[j];
-            //     console.log('coldataj ' + colDataj);
              }
             transformedResults.push(row);
         }
 
         return transformedResults;
     }
+
+    /**
+     * 
+     * @param query_results 
+     * @param x 
+     * @param y 
+     * @returns 
+     */
+    const transFormQueryResultsForChart = (query_results: any, x : string, y : string) => {
+    
+      const transformedResults : E2CChartData= [];
+      const xvalsData = query_results[x];
+      const yvalsData = query_results[y];
+
+      const xvals = Object.values(xvalsData);
+      const yvals = Object.values(yvalsData);
+      
+      const chartHeader : E2CChartDataRow =  [ x,  y,  {role : "style"}];  
+      transformedResults.push(chartHeader);
+
+      for (let i = 0; i < xvals.length; i++) {
+
+          const xvalue = xvals[i] as string;
+          const yvalue = Number(yvals[i] as string);
+          const style =   "#0891b2"
+          
+          const row : E2CChartDataRow = [ xvalue, yvalue, style ];
+          
+          transformedResults.push(row);
+      }
+
+      return transformedResults;
+  }
 
     const handleSend =  async () => {
         if (input.trim() === '') return;
@@ -513,11 +549,13 @@ export const Chatbot: React.FC = () => {
         //     setMessages((prevMessages) => [...prevMessages, errorMessage]);
         // }
 
-        await new Promise(resolve => setTimeout(resolve, 5000))
+        await new Promise(resolve => setTimeout(resolve, 2000))
         const botHeader: Message = { text: 'E2C Chatbot', messageType:'chatbot', sender: 'chatbot' };
         setMessages((prevMessages) => [...prevMessages.slice(0, -1), botHeader]);
-        const queryResults : Message = { text: '', messageType:'queryResults', sender: 'chatbot', query_result: transFormQueryResults(query_results) };
+        const queryResults : Message = { text: '', messageType:'queryResults', sender: 'chatbot', tableData: transFormQueryResultsForTable(query_results) };
         setMessages((prevMessages) => [...prevMessages, queryResults]);
+        const chartResults : Message = { text: '', messageType:'chart', sender: 'chatbot', chartData: transFormQueryResultsForChart(query_results, 'SCHOOL', 'AVG_MCAS_SCORE') };
+        setMessages((prevMessages) => [...prevMessages, chartResults]);
         const botExplanation: Message = { text: 'This query retrieves the average student attendance rate for all students in Massachusetts for the 2023 school year. It uses the DS_STUDENT_ATTENDANCE_STUDENT_GROUPS view, which contains attendance data for various student groups across different school years.', messageType:'explanation', sender: 'chatbot' };
         setMessages((prevMessages) => [...prevMessages, botExplanation]);
         setInput('');
@@ -531,7 +569,7 @@ export const Chatbot: React.FC = () => {
 
     return (
         <>        
-            <div className="flex flex-col h-full px-20">
+            <div className="flex flex-col h-full">
                 <div className="flex flex-col  bg-white h-full">
                     <div className="flex flex-col overflow-y-auto mb-4 max-w-3xl">
                         {messages.map((message, index) => (

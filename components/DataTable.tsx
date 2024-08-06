@@ -1,15 +1,12 @@
+import { E2CTableData } from "@/app/types/types";
 
-
-export const DataTable = ({ data }: { data: Array<Array<string>> }) => {
-  const headers = data.shift()!;
-
+export const DataTable = ({ data }: { data : E2CTableData }) => {
+  const headers = data[0];
 
   const colCount = headers.length;
 
-
-
   return (
-    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <table className="w-full text-sm text-center rtl:text-right">
       <thead>
         <tr>
           {headers.map(header => <th key={header}>{header}</th>)}
@@ -19,7 +16,7 @@ export const DataTable = ({ data }: { data: Array<Array<string>> }) => {
 
 
 
-        {data.map((row: Array<string>, index: number) => (
+        {[...data.slice(1)].map((row: Array<string>, index: number) => (
           <tr key={index}>
             {row.map((cell: string, index: number) => <td key={index}>{cell}</td>)}
           </tr>
