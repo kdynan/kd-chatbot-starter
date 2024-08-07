@@ -77,7 +77,7 @@ export function RenderMessage({ message }: { message: Message }) {
     case 'sql':
     case 'chart': return (
      
-        <div className="relative">
+        <div className="flex items-start">
         <ChartComponent data={message.chartData!} />
       </div>
     )

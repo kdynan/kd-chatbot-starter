@@ -4,8 +4,12 @@ import { DataExplanation } from './DataExplanation';
 import { RenderMessage } from './RenderMessage';
 import { Message, E2CTableData, E2CChartDataRow, E2CChartData } from '../app/types/types';
 
+type ChatbotProps = {
+    setPreviousQuestions: React.Dispatch<React.SetStateAction<string[]>>;
+}
 
-export const Chatbot: React.FC = () => {
+
+export function Chatbot({setPreviousQuestions} : ChatbotProps) {
     const suggestedQuestions = [
         "Has student attendance bounced back after COVID?",
         "What was student attendance in 2023?",
@@ -449,6 +453,7 @@ export const Chatbot: React.FC = () => {
     const [input, setInput] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const questionInputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         scrollToBottom();
@@ -559,6 +564,8 @@ export const Chatbot: React.FC = () => {
         const botExplanation: Message = { text: 'This query retrieves the average student attendance rate for all students in Massachusetts for the 2023 school year. It uses the DS_STUDENT_ATTENDANCE_STUDENT_GROUPS view, which contains attendance data for various student groups across different school years.', messageType:'explanation', sender: 'chatbot' };
         setMessages((prevMessages) => [...prevMessages, botExplanation]);
         setInput('');
+        questionInputRef.current!.value = '';
+        setPreviousQuestions((prevQuestions) => [...prevQuestions, input]);
     };
 
     const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -570,8 +577,8 @@ export const Chatbot: React.FC = () => {
     return (
         <>        
             <div className="flex flex-col h-full">
-                <div className="flex flex-col  bg-white h-full">
-                    <div className="flex flex-col overflow-y-auto mb-4 max-w-3xl">
+                <div className="flex flex-col overflow-y-auto bg-white h-full">
+                    <div className="flex flex-col mb-4 max-w-3xl">
                         {messages.map((message, index) => (
                                 <RenderMessage message={message} />
                         ))}
@@ -591,6 +598,7 @@ export const Chatbot: React.FC = () => {
                                 className="flex-auto bg-transparent border-none outline-none"
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyPress={handleKeyPress}
+                                ref={questionInputRef}
                             />
                             <button type="submit" aria-label="Submit question" onClick={handleSend}>
                                 <img loading="lazy" src="/images/submit.svg" alt="" className="shrink-0 self-start aspect-[1.25] fill-cyan-600 w-[25px]" />

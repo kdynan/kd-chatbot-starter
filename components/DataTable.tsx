@@ -9,7 +9,7 @@ export const DataTable = ({ data }: { data : E2CTableData }) => {
     <table className="w-full text-sm text-center rtl:text-right">
       <thead>
         <tr>
-          {headers.map(header => <th key={header}>{header}</th>)}
+          {headers.map(header => <th className="border" key={header}>{header}</th>)}
         </tr>
       </thead>
       <tbody>
@@ -18,7 +18,7 @@ export const DataTable = ({ data }: { data : E2CTableData }) => {
 
         {[...data.slice(1)].map((row: Array<string>, index: number) => (
           <tr key={index}>
-            {row.map((cell: string, index: number) => <td key={index}>{cell}</td>)}
+            {row.map((cell: string, index: number) => <td className="border" key={index}>{cell}</td>)}
           </tr>
         ))}
       </tbody>
