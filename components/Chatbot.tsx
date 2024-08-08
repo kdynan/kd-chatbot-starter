@@ -386,68 +386,8 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
       }
         */
 
-     const query_results  = {
-      "SY": {
-        "0": "2023",
-        "1": "2023",
-        "2": "2023",
-        "3": "2023",
-        "4": "2023",
-        "5": "2023",
-        "6": "2023",
-        "7": "2023",
-        "8": "2023",
-        "9": "2023"
-      },
-      "SCHOOL": {
-        "0": "John D Hardy",
-        "1": "Woodland",
-        "2": "Jonas Clarke Middle",
-        "3": "Wm Diamond Middle",
-        "4": "Country",
-        "5": "Hunnewell",
-        "6": "Winn Brook",
-        "7": "L D Batchelder",
-        "8": "Albert S. Woodward Memorial School",
-        "9": "Martin Luther King Jr."
-      },
-      "DISTRICT": {
-        "0": "Wellesley",
-        "1": "Weston",
-        "2": "Lexington",
-        "3": "Lexington",
-        "4": "Weston",
-        "5": "Wellesley",
-        "6": "Belmont",
-        "7": "North Reading",
-        "8": "Southborough",
-        "9": "Cambridge"
-      },
-      "AVG_MCAS_SCORE": {
-        "0": "524.43666667",
-        "1": "522.01500000",
-        "2": "521.24666667",
-        "3": "519.45666667",
-        "4": "519.18000000",
-        "5": "518.89000000",
-        "6": "518.00500000",
-        "7": "517.79000000",
-        "8": "517.59000000",
-        "9": "517.49666667"
-      },
-      "AVG_PCT_MEETING_OR_EXCEEDING": {
-        "0": "88.66666700",
-        "1": "85.50000000",
-        "2": "82.00000000",
-        "3": "81.00000000",
-        "4": "80.00000000",
-        "5": "83.33333300",
-        "6": "83.50000000",
-        "7": "81.66666700",
-        "8": "82.50000000",
-        "9": "80.33333300"
-      }
-    } 
+     const query_resultss  = '{"DIST_NAME": {"0": "Concord-Carlisle", "1": "Boston Day and Evening Academy Charter (District)", "2": "Lincoln-Sudbury", "3": "Phoenix Academy Public Charter High School, Springfield (District)", "4": "Weston", "5": "Carlisle", "6": "UP Academy Charter School of Dorchester (District)", "7": "Concord", "8": "Masconomet", "9": "Lowell Middlesex Academy Charter (District)"}, "SAL_AVG": {"0": "117960.00", "1": "116644.00", "2": "113571.00", "3": "113082.00", "4": "110901.00", "5": "110836.00", "6": "110522.00", "7": "108511.00", "8": "107457.00", "9": "106165.00"}}'
+     const query_results = JSON.parse(query_resultss);
 
     //const query_results = { ATTEND_RATE: '92.50', SY: '2023' }
     const [input, setInput] = useState<string>('');
@@ -539,30 +479,49 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
 
         const loadingMessage: Message = { text: 'Determining the best response...', messageType:'loading', sender: 'chatbot' };
         setMessages((prevMessages) => [...prevMessages, loadingMessage]);
-        // try {
+        try {
 
-        //     const response = await fetch('/api/chat', {t
-        //         method: 'POST',
-        //         body: JSON.stringify({ question: input }),
-        //     });
-        //     const json = await response.json();
-        //     console.log(json);
-        //     const botMessage: Message = { text: json.response.explanation, messageType:'explanation', sender: 'bot' };
-        //     setMessages((prevMessages) => [...prevMessages, botMessage]);
-        // } catch (error) {
-        //     const errorMessage: Message = { text: 'Error: Unable to fetch response', messageType:'error', sender: 'bot' };
-        //     setMessages((prevMessages) => [...prevMessages, errorMessage]);
-        // }
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                body: JSON.stringify({ question: input }),
+            });
+            const json = await response.json();
+            console.log(json);
 
-        await new Promise(resolve => setTimeout(resolve, 2000))
+            const botHeader: Message = { text: 'E2C Chatbot', messageType:'chatbot', sender: 'chatbot' };
+            setMessages((prevMessages) => [...prevMessages.slice(0, -1), botHeader]);
+            const queryResults : Message = { text: '', messageType:'queryResults', sender: 'chatbot', tableData: transFormQueryResultsForTable(JSON.parse(json.response.query_results)) };
+            setMessages((prevMessages) => [...prevMessages, queryResults]);
+            const chartResults : Message = { text: '', messageType:'chart', sender: 'chatbot', chartData: transFormQueryResultsForChart(JSON.parse(json.response.query_results), json.response.x, json.response.y) };
+            setMessages((prevMessages) => [...prevMessages, chartResults]);
+
+            const explanation: Message = { text: json.response.explanation, messageType:'explanation', sender: 'chatbot' };
+            setMessages((prevMessages) => [...prevMessages, explanation]);
+
+            const sql: Message = { text: json.response.sql, messageType:'sql', sender: 'chatbot' };
+            setMessages((prevMessages) => [...prevMessages, sql]);
+
+            const done: Message = { text: 'Question Answered...', messageType:'done', sender: 'chatbot' };
+            setMessages((prevMessages) => [...prevMessages, done]);
+
+            
+        } catch (error) {
+            console.log(error);
+            const errorMessage: Message = { text: 'Error: Unable to fetch response', messageType:'error', sender: 'chatbot' };
+            setMessages((prevMessages) => [...prevMessages, errorMessage]);
+        }
+
+        /* await new Promise(resolve => setTimeout(resolve, 2000))
         const botHeader: Message = { text: 'E2C Chatbot', messageType:'chatbot', sender: 'chatbot' };
         setMessages((prevMessages) => [...prevMessages.slice(0, -1), botHeader]);
         const queryResults : Message = { text: '', messageType:'queryResults', sender: 'chatbot', tableData: transFormQueryResultsForTable(query_results) };
         setMessages((prevMessages) => [...prevMessages, queryResults]);
-        const chartResults : Message = { text: '', messageType:'chart', sender: 'chatbot', chartData: transFormQueryResultsForChart(query_results, 'SCHOOL', 'AVG_MCAS_SCORE') };
+        const chartResults : Message = { text: '', messageType:'chart', sender: 'chatbot', chartData: transFormQueryResultsForChart(query_results, 'DIST_NAME', 'SAL_AVG') };
         setMessages((prevMessages) => [...prevMessages, chartResults]);
         const botExplanation: Message = { text: 'This query retrieves the average student attendance rate for all students in Massachusetts for the 2023 school year. It uses the DS_STUDENT_ATTENDANCE_STUDENT_GROUPS view, which contains attendance data for various student groups across different school years.', messageType:'explanation', sender: 'chatbot' };
-        setMessages((prevMessages) => [...prevMessages, botExplanation]);
+        setMessages((prevMessages) => [...prevMessages, botExplanation]); */
+
+
         setInput('');
         questionInputRef.current!.value = '';
         setPreviousQuestions((prevQuestions) => [...prevQuestions, input]);

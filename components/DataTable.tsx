@@ -6,7 +6,7 @@ export const DataTable = ({ data }: { data : E2CTableData }) => {
   const colCount = headers.length;
 
   return (
-    <table className="w-full text-sm text-center rtl:text-right">
+    <table className="text-sm text-left rtl:text-right px-4">
       <thead>
         <tr>
           {headers.map(header => <th className="border" key={header}>{header}</th>)}

@@ -1,6 +1,6 @@
 export interface Message {
     text: string;
-    messageType: 'explanation' | 'sql' | 'chart' | 'error' | 'user' | 'chatbot' | 'loading' | 'queryResults';
+    messageType: 'explanation' | 'sql' | 'chart' | 'error' | 'user' | 'chatbot' | 'loading' | 'queryResults' | 'done';
     sender: 'user' | 'chatbot';
     tableData?: E2CTableData;
     chartData?: E2CChartData;

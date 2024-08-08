@@ -3,6 +3,7 @@ import { RotatingLines } from 'react-loader-spinner';
 import { Message } from '../app/types/types';
 import { DataTable } from './DataTable';
 import { ChartComponent } from './Chart';
+import {SQL} from './SQL';
 
 export function RenderMessage({ message }: { message: Message }) {
 
@@ -74,7 +75,11 @@ export function RenderMessage({ message }: { message: Message }) {
       </div>
     );
 
-    case 'sql':
+    case 'sql': return (
+      <section className="relative mt-7 text-base text-black max-md:max-w-full bg-zinc-100">
+        <SQL sql={message.text} />
+      </section>
+    )
     case 'chart': return (
      
         <div className="flex items-start">
@@ -82,11 +87,25 @@ export function RenderMessage({ message }: { message: Message }) {
       </div>
     )
     case 'queryResults': return (
-      <div className="relative ">
+      <div className="flex ">
         <DataTable data={message.tableData!} />
       </div>
     )
-    case 'error':
+    case 'error': return (
+      <div className="flex flex-wrap gap-3 text-xl max-md:mt-10">
+        <div className="flex flex-wrap flex-auto gap-3 px-4 py-4 my-auto rounded-lg bg-zinc-100 text-neutral-700">
+        <img
+            loading="lazy"
+            src="/images/chatbot.svg"
+            alt=""
+            className="object-contain shrink-0 bg-cyan-600 rounded aspect-[1.06] w-[34px]"
+          />
+          <div className="flex-auto my-auto max-md:max-w-full">
+            {message.text}
+          </div>
+        </div>
+      </div>
+    )
     case 'user': return (
       <div className="flex flex-wrap gap-3 text-xl max-md:mt-10">
         <div className="flex flex-wrap flex-auto gap-3 px-4 py-4 my-auto rounded-lg bg-zinc-100 text-neutral-700">
@@ -100,6 +119,17 @@ export function RenderMessage({ message }: { message: Message }) {
             {message.text}
           </div>
         </div>
+      </div>
+    )
+    case 'done': return (
+      <div className="flex flex-wrap gap-2.5 px-5 py-2.5 mt-4 max-w-full text-lg rounded-lg bg-stone-100 text-zinc-900 w-[778px]">
+        <img
+          loading="lazy"
+          src="/images/check.svg"
+          alt=""
+          className="object-contain shrink-0 my-auto aspect-[1.28] w-[23px]"
+        />
+        <div className="flex-auto max-md:max-w-full">{message.text}</div>
       </div>
     );
   }
