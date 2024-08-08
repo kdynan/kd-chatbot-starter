@@ -392,6 +392,7 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
     //const query_results = { ATTEND_RATE: '92.50', SY: '2023' }
     const [input, setInput] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
+    const [sessionId, setSessionId] = useState<string>('');
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const questionInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -479,11 +480,25 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
 
         const loadingMessage: Message = { text: 'Determining the best response...', messageType:'loading', sender: 'chatbot' };
         setMessages((prevMessages) => [...prevMessages, loadingMessage]);
+        
+        let payload;
+
+        if (!sessionId) {
+            payload = {
+                question: input,
+            };
+        } else {
+            payload = {
+                question: input,
+                session_id: sessionId,
+            };
+        }
+        
         try {
 
             const response = await fetch('/api/chat', {
                 method: 'POST',
-                body: JSON.stringify({ question: input }),
+                body: JSON.stringify(payload),
             });
             const json = await response.json();
             console.log(json);
@@ -503,6 +518,10 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
 
             const done: Message = { text: 'Question Answered...', messageType:'done', sender: 'chatbot' };
             setMessages((prevMessages) => [...prevMessages, done]);
+
+            if (!sessionId) {
+                setSessionId(json.response.session_id);
+            }
 
             
         } catch (error) {
