@@ -2,12 +2,19 @@ import React from 'react';
 import {SuggestedQuestion} from './SuggestedQuestion';
 import { useEffect } from 'react';
 interface SuggestedQuestionsListProps {
-  questions: string[];
+  setInput : React.Dispatch<React.SetStateAction<string>>
 }
 
-export const SuggestedQuestionsList: React.FC<SuggestedQuestionsListProps> = ({ questions }) => {
+export const SuggestedQuestionsList: React.FC<SuggestedQuestionsListProps> = ({ setInput }) => {
   
   const [examples, setExamples] = React.useState<[string]>(['']);
+
+  function onQuestionClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    console.log('Question clicked:', event.currentTarget.innerText);
+    setInput(event.currentTarget.innerText);
+    document.getElementById('submitQuestionButton')?.click();
+    
+  }
   
   useEffect(() => {
     
@@ -33,7 +40,7 @@ export const SuggestedQuestionsList: React.FC<SuggestedQuestionsListProps> = ({ 
       
       <div className="mb-4 grid grid-cols-2 gap-3 px-4 sm:px-0 text-white">
         {examples.map((question, index) => (
-          <SuggestedQuestion key={index} question={question} />
+          <SuggestedQuestion key={index} question={question} onQuestionClick={onQuestionClick} />
         ))}
       </div>
       </div>

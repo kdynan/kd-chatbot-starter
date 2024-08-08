@@ -563,7 +563,7 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
                         <div ref={messagesEndRef} />
                     </div>
                     {messages.length === 0 ? (
-                        <SuggestedQuestionsList questions={suggestedQuestions} />) : null}
+                        <SuggestedQuestionsList setInput={setInput}/>) : null}
                     
                 </div>
                 <div className="flex flex-col justify-center mb-7 max-w-3xl text-lg text-stone-300">
@@ -578,7 +578,7 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
                                 onKeyPress={handleKeyPress}
                                 ref={questionInputRef}
                             />
-                            <button type="submit" aria-label="Submit question" onClick={handleSend}>
+                            <button id="submitQuestionButton" type="submit" aria-label="Submit question" onClick={handleSend}>
                                 <img loading="lazy" src="/images/submit.svg" alt="" className="shrink-0 self-start aspect-[1.25] fill-cyan-600 w-[25px]" />
                             </button>
                         </div>
