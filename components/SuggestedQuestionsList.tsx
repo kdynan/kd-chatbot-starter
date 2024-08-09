@@ -1,33 +1,45 @@
+
 import React from 'react';
 import {SuggestedQuestion} from './SuggestedQuestion';
 import { useEffect } from 'react';
+import useSWR from 'swr';
+
+
 interface SuggestedQuestionsListProps {
-  setInput : React.Dispatch<React.SetStateAction<string>>
+  inputRef : React.MutableRefObject<HTMLInputElement | null>,
+  submitRef : React.MutableRefObject<HTMLButtonElement | null>
 }
 
-export const SuggestedQuestionsList: React.FC<SuggestedQuestionsListProps> = ({ setInput }) => {
+export function SuggestedQuestionsList({ inputRef, submitRef } : SuggestedQuestionsListProps) {
   
-  const [examples, setExamples] = React.useState<[string]>(['']);
+  const fetcher = (url: string) => fetch(url).then(r => r.json())
+  
+  //const { data, error } = useSWR('/api/examples', fetcher);
+
+  //const newexamples = data?.response.examples as string[];
+
+
+  const [examples, setExamples] = React.useState<[string]|null>(null);
 
   function onQuestionClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     console.log('Question clicked:', event.currentTarget.innerText);
-    setInput(event.currentTarget.innerText);
-    document.getElementById('submitQuestionButton')?.click();
+  
+    inputRef.current!.value = event.currentTarget.innerText;
+
+    submitRef.current!.click();
     
   }
-  
   useEffect(() => {
     
     async function fetchExamples()  {
       const response = await fetch('/api/examples');
       const data = await response.json();
-      
-      setExamples(data.response.examples);
-      console.log(data.response.examples);
+
+     setExamples(data.response.examples);
       
     }
 
-    fetchExamples();
+   fetchExamples()
 
   }, []);
   
@@ -39,7 +51,7 @@ export const SuggestedQuestionsList: React.FC<SuggestedQuestionsListProps> = ({ 
       <h2 className="mt-10 font-medium text-black max-md:mt-10 text-center">Suggested Questions</h2>
       
       <div className="mb-4 grid grid-cols-2 gap-3 px-4 sm:px-0 text-white">
-        {examples.map((question, index) => (
+        {examples?.map((question, index) => (
           <SuggestedQuestion key={index} question={question} onQuestionClick={onQuestionClick} />
         ))}
       </div>

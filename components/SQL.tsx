@@ -7,7 +7,7 @@ export function SQL({ sql }: { sql: string }) {
 
     return (
         <div className="overflow-x-auto">
-            <pre className="text-sm text-left rtl:text-right p-4 whitespace-pre-wrap">
+            <pre className="text-xs text-left rtl:text-right p-4 whitespace-pre-wrap">
                 <code className="language-sql">
                     {formattedSQL}
                 </code>

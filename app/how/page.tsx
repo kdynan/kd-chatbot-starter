@@ -1,6 +1,8 @@
 import React from 'react';
 import {HowItWorksStep} from '../../components/HowItWorksStep';
-import {QuestionInput} from '../../components/QuestionInput';
+
+
+
 
 const steps = [
   {
@@ -43,7 +45,6 @@ export default function HowItWorks() {
         {steps.map((step, index) => (
           <HowItWorksStep key={index} {...step} />
         ))}
-        <QuestionInput />
       </main>
   );
 };

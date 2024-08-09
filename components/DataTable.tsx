@@ -7,14 +7,12 @@ export const DataTable = ({ data }: { data : E2CTableData }) => {
 
   return (
     <table className="text-sm text-left rtl:text-right px-4">
-      <thead>
+      <thead className="bg-gray-50">
         <tr>
           {headers.map(header => <th className="border" key={header}>{header}</th>)}
         </tr>
       </thead>
       <tbody>
-
-
 
         {[...data.slice(1)].map((row: Array<string>, index: number) => (
           <tr key={index}>
