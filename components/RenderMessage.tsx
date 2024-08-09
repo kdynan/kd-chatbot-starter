@@ -15,7 +15,7 @@ export function RenderMessage({ message }: { message: Message }) {
       </section>
     );
     case 'loading' : return (
-      <div className="flex flex-wrap gap-3 text-xl max-md:mt-10">
+      <div className="flex flex-wrap gap-3 text-sm max-md:mt-10">
        <div className="flex flex-grow gap-3 px-4 py-4 my-auto text-neutral-700">
           <img
             loading="lazy"
