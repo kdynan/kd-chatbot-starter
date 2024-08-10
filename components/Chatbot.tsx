@@ -41,8 +41,8 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
         const col1 : any = colData[0];
         const rowCount = Object.keys(col1).length
         
-        console.log('colcount ' + colCount);
-        console.log('rowcount ' + rowCount);
+        //console.log('colcount ' + colCount);
+        //console.log('rowcount ' + rowCount);
         
         transformedResults.push(headers);
         
@@ -51,7 +51,7 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
             
             for (let j = 0; j < colCount; j++) {
                 const col : any = colData[j];
-                console.log('col ' + col[i]); 
+                //console.log('col ' + col[i]); 
                 row.push(col[i]);
              }
             transformedResults.push(row);

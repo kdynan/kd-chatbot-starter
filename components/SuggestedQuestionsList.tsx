@@ -32,7 +32,7 @@ export function SuggestedQuestionsList({ inputRef, submitRef } : SuggestedQuesti
   useEffect(() => {
     
     async function fetchExamples()  {
-      const response = await fetch('/api/examples');
+      const response = await fetch('/api/examples/4');
       const data = await response.json();
 
      setExamples(data.response.examples);

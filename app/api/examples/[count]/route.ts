@@ -1,10 +1,10 @@
 
-export async function GET(req: Request) {
+export async function GET(req: Request, { params}: {params: { count: string }}) {
 
   let apiUrl : string = process.env.E2C_CHATBOT_API_BASE_URL!;
   const apiKey : string = process.env.E2C_CHATBOT_API_KEY!;
 
-  apiUrl = `${apiUrl}/examples/get_examples/4`;
+  apiUrl = `${apiUrl}/examples/get_examples/${params.count}`;
 
   const result = await fetch(apiUrl, {
     method: 'GET',
