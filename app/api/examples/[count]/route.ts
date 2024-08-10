@@ -1,5 +1,11 @@
+import os from 'os';
 
 export async function GET(req: Request, { params}: {params: { count: string }}) {
+
+  
+  const networkInterfaces = os.networkInterfaces();
+
+  console.log(networkInterfaces);
 
   let apiUrl : string = process.env.E2C_CHATBOT_API_BASE_URL!;
   const apiKey : string = process.env.E2C_CHATBOT_API_KEY!;
