@@ -9,6 +9,6 @@ export interface Message {
 
 export type E2CTableData = Array<Array<string>>;
 
-export type E2CChartDataRow = [string, string | number, string | {}];
+export type E2CChartDataRow = [string, string | number, string | {} | null];
 
 export type E2CChartData = Array<E2CChartDataRow>;

@@ -13,7 +13,7 @@ export function Sidebar({ previousQuestions }: { previousQuestions: string[] }) 
           </h2>
         )}
         {previousQuestions.map((question, index) => (
-          <div className="px-2.5 py-5 mt-2 text-xs leading-6 text-white bg-cyan-600 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-cyan-800">
+          <div key={index} className="px-2.5 py-5 mt-2 text-xs leading-6 text-white bg-cyan-600 rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-cyan-800">
             {question}
           </div>
         ))}

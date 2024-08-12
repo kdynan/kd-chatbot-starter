@@ -83,9 +83,9 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
 
           const xvalue = xvals[i] as string;
           const yvalue = Number(yvals[i] as string);
-          const style =   "#0891b2"
+          //const style =   "#0891b2"
           
-          const row : E2CChartDataRow = [ xvalue, yvalue, style ];
+          const row : E2CChartDataRow = [ xvalue, yvalue, null];
           
           transformedResults.push(row);
       }
@@ -174,7 +174,7 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
                 <div className="flex flex-col overflow-y-auto bg-white h-full max-w-screen-xl">
                     <div className="flex flex-col mb-4 gap-2 ">
                         {messages.map((message, index) => (
-                                <RenderMessage message={message} />
+                                <RenderMessage key={index} message={message} />
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
