@@ -17,7 +17,7 @@ export const HowItWorksStep: React.FC<HowItWorksStepProps> = ({ iconSrc, iconAlt
           </div>
         </div>
         <div className="flex flex-col ml-5 w-[70%] max-md:ml-0 max-md:w-full">
-          <p className="self-stretch my-auto text-2xl text-black max-md:mt-10">
+          <p className="self-stretch my-auto text-xl text-black max-md:mt-10">
             {description}
           </p>
         </div>

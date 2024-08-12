@@ -1,5 +1,6 @@
 import React from 'react';
 import {HowItWorksStep} from '../../components/HowItWorksStep';
+import { Sidebar } from '@/components/Sidebar';
 
 
 
@@ -27,6 +28,8 @@ const steps = [
 
 export default function HowItWorks() {
   return (
+    <>
+    <Sidebar previousQuestions={null}/>
       <main className="flex flex-col items-start self-center w-full max-w-[1129px] max-md:max-w-full">
         <section className="ml-3.5 max-md:max-w-full w-3/4">
           <div className="flex gap-5 max-md:flex-col max-md:gap-0">
@@ -46,5 +49,6 @@ export default function HowItWorks() {
           <HowItWorksStep key={index} {...step} />
         ))}
       </main>
+      </>
   );
 };
