@@ -76,7 +76,7 @@ export function RenderMessage({ message }: { message: Message }) {
     );
 
     case 'sql': return (
-      <section className=" text-sm text-black max-md:max-w-full bg-zinc-100">
+      <section className=" text-sm text-black max-md:max-w-full">
         <SQL sql={message.text} />
       </section>
     )
@@ -137,7 +137,8 @@ export function RenderMessage({ message }: { message: Message }) {
       </div>
     )
     case 'done': return (
-      <div className="flex flex-wrap gap-2.5 px-5 py-2.5 mt-4 max-w-full text-sm rounded-lg bg-stone-100 text-zinc-900">
+      <div className="flex flex-wrap gap-3 text-sm max-md:mt-10">
+        <div className="flex gap-2 px-4 py-4 my-auto rounded-lg bg-zinc-100 text-neutral-700 w-1/3">
         <img
           loading="lazy"
           src="/images/check.svg"
@@ -145,6 +146,7 @@ export function RenderMessage({ message }: { message: Message }) {
           className="object-contain shrink-0 my-auto aspect-[1.28] w-[23px]"
         />
         <div className="flex-auto max-md:max-w-full">{message.text}</div>
+        </div>
       </div>
     );
   }

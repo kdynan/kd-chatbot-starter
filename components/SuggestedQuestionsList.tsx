@@ -1,7 +1,7 @@
 
 import React from 'react';
 import {SuggestedQuestion} from './SuggestedQuestion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 
@@ -11,6 +11,7 @@ interface SuggestedQuestionsListProps {
 }
 
 export function SuggestedQuestionsList({ inputRef, submitRef } : SuggestedQuestionsListProps) {
+  const [loading, setLoading] = useState(true);
   
   const fetcher = (url: string) => fetch(url).then(r => r.json())
   
@@ -36,6 +37,7 @@ export function SuggestedQuestionsList({ inputRef, submitRef } : SuggestedQuesti
       const data = await response.json();
 
      setExamples(data.response.examples);
+     setLoading(false);
       
     }
 
@@ -49,6 +51,9 @@ export function SuggestedQuestionsList({ inputRef, submitRef } : SuggestedQuesti
       <h1 className="mt-6 font-medium text-black">How can I help you today?</h1>
       <div className="mx-auto sm:max-w-2xl sm:px-4">
       <h2 className="mt-10 font-medium text-black max-md:mt-10 text-center">Suggested Questions</h2>
+      
+      {loading && <div className="mt-4 text-center text-zinc-500">Loading Suggested Questions...</div>}
+
       
       <div className="mb-4 grid grid-cols-2 gap-3 px-4 sm:px-0 text-white">
         {examples?.map((question, index) => (

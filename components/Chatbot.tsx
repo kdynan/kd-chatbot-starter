@@ -184,7 +184,7 @@ export function Chatbot({setPreviousQuestions} : ChatbotProps) {
                     
                 </div>
                 <div className="flex flex-col justify-center mb-7 text-lg text-stone-300">
-                        <div className="flex gap-5 px-6 py-5 rounded-lg border-2 border-cyan-600 border-solid max-md:flex-wrap max-md:px-5 max-md:max-w-full">
+                        <div className="flex gap-5 px-6 py-5 rounded-lg border-2 border-cyan-600 border-solid max-md:flex-wrap max-md:px-5 max-md:max-w-full max-w-6xl">
                             <label htmlFor="questionInput" className="sr-only">Ask a question</label>
                             <input
                                 type="text"
